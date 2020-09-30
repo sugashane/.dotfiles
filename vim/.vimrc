@@ -1,0 +1,12 @@
+syntax enable
+colorscheme monokai
+set expandtab
+set number
+set hidden
+set ignorecase
+set shiftwidth=4
+set smartcase
+set mouse=a
+set nobackup
+set tabstop=4
+set clipboard=unnamedplus
