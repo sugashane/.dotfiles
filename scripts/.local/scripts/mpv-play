@@ -1,0 +1,6 @@
+#!/bin/bash
+
+## mpv wrapper to make it run in the background
+
+mpv --really-quiet "$@" &
+disown

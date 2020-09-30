@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cmd=$(python ~/.local/scripts/twitch-stuff.py | dmenu  -l 20  -nf '#f8f8f2' -nb '#272822' -sf '#a1efe4' -sb '#75715e' -p 'Select Stream URL')
+
+mpv-play $cmd

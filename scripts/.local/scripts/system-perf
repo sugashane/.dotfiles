@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo ""
+
+echo "Current memory usage:"
+free -h | awk '/^Mem:/ {print $3 "/" $2}'
+
+echo ""
+
+echo "Top 10 memory hogs:"
+ps axch -o cmd,%mem --sort=-%mem | head
+
+echo ""
+
+echo "Current CPU Temp:"
+sensors | awk '/^CPUTIN:/ {print $2}'
+
+echo ""
+
+echo "Top 10 CPU hogs:"
+ps axch -o cmd,%cpu --sort=-%cpu | head
+
+echo ""
+
+echo "GPU Statistics:"
+
+nvidia-smi

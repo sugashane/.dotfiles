@@ -1,0 +1,27 @@
+#!/bin/bash
+
+IMG_PATH=$HOME/Pictures/screenshots
+EDIT=gimp
+FORMAT='%Y-%m-%d-@%H-%M-%S-scrot.png'
+
+prog="
+---Screenshot Utility---
+1.section_copy_to_clipboard
+2.section_edit_in_gimp
+3.fullscreen
+4.fullscreen_edit_in_gimp
+"
+
+# The dmenu output. Shows the 
+cmd=$(dmenu  -l 20  -nf '#f8f8f2' -nb '#272822' -sf '#a1efe4' -sb '#75715e' -p 'Choose Screenshot Type'   <<< "$prog")
+
+cd $IMG_PATH
+case ${cmd%% *} in
+
+	1.section_copy_to_clipboard)    scrot -s  $FORMAT -e 'xclip -selection clipboard -target image/png -i $f' && notify-send -u low 'Scrot' 'Screenshot of section saved'    ;;
+	2.section_edit_in_gimp)    scrot -s $FORMAT -e "$EDIT \$f" && notify-send -u low 'Scrot' 'Screenshot of section edited and saved'    ;;
+	3.fullscreen)	scrot -d 1 $FORMAT && notify-send -u low 'Scrot' 'Fullscreen taken and saved'  ;;
+	4.fullscreen_edit_in_gimp)	scrot -d 1 $FORMAT -e "$EDIT \$f"  && notify-send -u low 'Scrot' 'Screenshot edited and saved' ;;
+
+  	*)		exec "'${cmd}'"  ;;
+esac

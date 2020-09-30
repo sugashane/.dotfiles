@@ -1,0 +1,6 @@
+# Ignore secrets.py file which contains sensitive data
+scripts/.local/scripts/secrets.py
+
+# Ignore __pycache__ in scripts directory
+scripts/.local/scripts/__pycache__/
+
