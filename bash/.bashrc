@@ -116,3 +116,4 @@ fi
 
 neofetch
 
+export EDITOR=vim
