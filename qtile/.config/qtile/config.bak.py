@@ -27,17 +27,20 @@
 from typing import List  # noqa: F401
 
 from libqtile import bar, layout, widget
-from libqtile.config import Click, Drag, Group, Key, Screen
+from libqtile.config import Click, Drag, Group, Key, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile import hook
 import os
 import subprocess
 
-@hook.subscribe.startup_once
-def autostart():
-    home = os.path.expanduser('~/.config/qtile/autostart.sh')
-    subprocess.call([home])
+# At this time I'm loading everything in xinitrc. May enable this once I
+# determine what applications are best to start with xinit and which are best to
+# here
+#@hook.subscribe.startup_once
+#def autostart():
+#    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+#    subprocess.call([home])
 
 mod = "mod1"
 terminal = guess_terminal()
@@ -132,16 +135,26 @@ keys = [
     Key([mod], "d", lazy.spawn("dmenu_run -p 'Run: '")),
     Key([mod], "w", lazy.spawn("qutebrowser")),
     Key([], "Print", lazy.spawn(".local/scripts/dmenu-scrot")),
+    Key([mod], "t", lazy.spawn("/usr/bin/telegram-desktop")),
 
     # Function Keys
-    Key([], "XF86AudioMute", lazy.spawn("amixer -q set Master toggle")),
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master 5%+")),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer sset Master 5%-")),
-    Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause")),
-    Key([], "XF86AudioNext", lazy.spawn("playerctl next")),
-    Key([], "XF86AudioPrev", lazy.spawn("playerctl previous")),
-    Key([], "XF86AudioStop", lazy.spawn("playerctl stop")),
-    Key([], "XF86Tools", lazy.spawn("spotify")),
+    Key([mod], "F1", lazy.spawn("termite -e ranger")),
+    #Key([], "XF86AudioMute", lazy.spawn("amixer -q set Master toggle")),
+    Key([mod], "F10", lazy.spawn("amixer -q set Master toggle")),
+    #Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer sset Master 5%+")),
+    Key([mod], "F12", lazy.spawn("amixer sset Master 5%+")),
+    #Key([], "XF86AudioLowerVolume", lazy.spawn("amixer sset Master 5%-")),
+    Key([mod], "F11", lazy.spawn("amixer sset Master 5%-")),
+    #Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause")),
+    Key([mod], "F7", lazy.spawn("playerctl play-pause")),
+    #Key([], "XF86AudioNext", lazy.spawn("playerctl next")),
+    Key([mod], "F8", lazy.spawn("playerctl next")),
+    #Key([], "XF86AudioPrev", lazy.spawn("playerctl previous")),
+    Key([mod], "F6", lazy.spawn("playerctl previous")),
+    #Key([], "XF86AudioStop", lazy.spawn("playerctl stop")),
+    Key([mod], "F5", lazy.spawn("playerctl stop")),
+    #Key([], "XF86Tools", lazy.spawn("spotify")),
+    Key([mod], "F9", lazy.spawn("termite -e ncspot")),
 ]
 
 groups = [Group(i) for i in "12345678"]
@@ -161,6 +174,19 @@ for i in groups:
         #     desc="move focused window to group {}".format(i.name)),
     ])
 
+'''
+groups.append(
+    ScratchPad("scratchpad", [
+        # define a drop down terminal.
+        # it is placed in the upper third of screen by default.
+        DropDown("telegram", "/usr/bin/telegram-desktop", opacity=0.88, height=0.10, width=0.20, ),
+    ]), )
+
+keys.extend([
+    Key([mod], 't', lazy.group['scratchpad'].dropdown_toggle('telegram')),    
+])
+'''
+
 layouts = [
     layout.MonadTall(margin=0, border_width=2, border_focus="#66d9ef", border_normal="#000000"),
     layout.Max(),
@@ -179,17 +205,17 @@ layouts = [
 ]
 
 colors = [["#272822", "#272822"], # panel background
-          ["#434758", "#434758"], # background for current screen tab
+          ["#75715e", "#71715e"], # background for current screen tab
           ["#f8f8f2", "#f8f8f2"], # font color for group names
-          ["#ff5555", "#ff5555"], # border line color for current tab
+          ["#f92672", "#f92672"], # border line color for current tab
           ["#66d9ef", "#66d9ef"], # border line color for other tab and odd widgets
-          ["#668bd7", "#668bd7"], # color for the even widgets
-          ["#e1acff", "#e1acff"]] # window name
+          ["#ae81ff", "#ae81ff"], # color for the even widgets
+          ["#a1efe4", "#a1efe4"]] # window name
 
 
 ##### DEFAULT WIDGET SETTINGS #####
 widget_defaults = dict(
-    font='Hack',
+    font='Noto Sans',
     fontsize=12,
     padding=3,
     background = colors[0]
@@ -209,8 +235,8 @@ screens = [
                     background = colors[0]
                     ),
                 widget.GroupBox(
-                    this_current_screen_border = "66d9ef",
-                    this_screen_border = "66d9ef"
+                    this_current_screen_border = "#66d9ef",
+                    this_screen_border = "#66d9ef"
                     ),
                 widget.Prompt(),
                 widget.WindowName(),

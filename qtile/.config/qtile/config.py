@@ -53,7 +53,7 @@ keys = [
         desc="Move focus up in stack pane"),
     # Screen Swap
     Key([mod], "period", lazy.to_screen(0)),
-    Key([mod], "comma", lazy.to_screen(1)),    
+    Key([mod], "comma", lazy.to_screen(1)),
 
     # RESIZE UP, DOWN, LEFT, RIGHT
     Key([mod, "control"], "l",
@@ -127,7 +127,8 @@ keys = [
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
-
+    Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Focused window to/from fullscreen"),
+    Key([mod, "shift"], "f", lazy.window.toggle_floating(), desc="Focused window to/from floating"),
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
 
@@ -135,7 +136,6 @@ keys = [
     Key([mod], "d", lazy.spawn("dmenu_run -p 'Run: '")),
     Key([mod], "w", lazy.spawn("qutebrowser")),
     Key([], "Print", lazy.spawn(".local/scripts/dmenu-scrot")),
-    Key([mod], "t", lazy.spawn("/usr/bin/telegram-desktop")),
 
     # Function Keys
     Key([mod], "F1", lazy.spawn("termite -e ranger")),
@@ -174,18 +174,18 @@ for i in groups:
         #     desc="move focused window to group {}".format(i.name)),
     ])
 
-'''
+
 groups.append(
     ScratchPad("scratchpad", [
         # define a drop down terminal.
         # it is placed in the upper third of screen by default.
-        DropDown("telegram", "/usr/bin/telegram-desktop", opacity=0.88, height=0.10, width=0.20, ),
+        DropDown("telegram", "/usr/bin/telegram-desktop", opacity=0.92, height=0.10, width=0.20, ),
     ]), )
 
 keys.extend([
-    Key([mod], 't', lazy.group['scratchpad'].dropdown_toggle('telegram')),    
+    Key([mod], 't', lazy.group['scratchpad'].dropdown_toggle('telegram')),
 ])
-'''
+
 
 layouts = [
     layout.MonadTall(margin=0, border_width=2, border_focus="#66d9ef", border_normal="#000000"),
@@ -215,7 +215,7 @@ colors = [["#272822", "#272822"], # panel background
 
 ##### DEFAULT WIDGET SETTINGS #####
 widget_defaults = dict(
-    font='Hack',
+    font='Noto Sans',
     fontsize=12,
     padding=3,
     background = colors[0]
